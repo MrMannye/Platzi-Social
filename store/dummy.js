@@ -10,7 +10,7 @@ const db = {
 };
 
 const list = (tabla) => {
-    return db[tabla];
+    return db[tabla] || [];
 }
 
 const get = async (tabla,id) => {
@@ -24,6 +24,12 @@ const upsert = (tabla,data) => {
     return data
 }
 
+const login = async(tabla,data) => {
+    let list = await list(tabla);
+    let keys = Object.keys(data);
+    return list.filter(item => item[keys[0]] === data[keys])[0] || null;
+}  
+
 const remove = async (tabla,id) => {
     return true;
 }
@@ -32,5 +38,6 @@ module.exports = {
     list,
     get,
     upsert,
-    remove
+    remove,
+    login
 }
