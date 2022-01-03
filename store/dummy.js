@@ -5,7 +5,11 @@ const db = {
         {id: '3', name: 'Zuriel'},
     ],
     'auth':[
-
+        {
+            id: 'VnEdhD38beHW4fgdTm6iq',
+            username: 'manu',
+            password: '123456789'
+        },
     ]
 };
 
@@ -24,10 +28,11 @@ const upsert = (tabla,data) => {
     return data
 }
 
-const login = async(tabla,data) => {
-    let list = await list(tabla);
+const query = async(tabla,data) => {
+    let col = await list(tabla);
     let keys = Object.keys(data);
-    return list.filter(item => item[keys[0]] === data[keys])[0] || null;
+    let key = keys[0]; 
+    return col.filter(item => item[key] === data[key])[0] || null;
 }  
 
 const remove = async (tabla,id) => {
@@ -39,5 +44,5 @@ module.exports = {
     get,
     upsert,
     remove,
-    login
+    query
 }

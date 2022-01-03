@@ -1,4 +1,7 @@
-const AUTH = 'auth';
+const auth = require('../../auth')
+const bcrypt = require('bcrypt')
+const TABLA = 'auth';
+
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
@@ -6,9 +9,21 @@ module.exports = function (injectedStore) {
         store = require('../../store/dummy');
     }
 
-    const login = async (username) => {
-        const userLoged = await store.login(AUTH, {username: username})
-        return userLoged;
+    const get = async () => {
+        try {
+            return await store.list(TABLA);
+        } catch (error) {
+            return error
+        }
+    }
+
+    const login = async (username, password) => {
+        const userLoged = await store.query(TABLA, { username: username })
+        if (userLoged.password == password) {
+            return auth.sign(userLoged);
+        } else {
+            throw new Error('Informacion invalida')
+        }
     }
 
     const upsert = async (data) => {
@@ -19,10 +34,10 @@ module.exports = function (injectedStore) {
             user.username = data.username;
         }
         if (data.password) {
-            user.password = data.password;
+            user.password = await bcrypt.hash(data.password,10);
         }
         try {
-            const authUser = await store.upsert(AUTH, user);
+            const authUser = await store.upsert(TABLA, user);
             return authUser;
         } catch (error) {
             return "Error de autenticacion"
@@ -31,6 +46,7 @@ module.exports = function (injectedStore) {
 
     return {
         upsert,
-        login
+        login,
+        get
     };
 }
