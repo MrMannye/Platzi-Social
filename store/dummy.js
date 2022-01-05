@@ -40,11 +40,17 @@ const remove = async (tabla,id) => {
 }
 
 const updated = async (tabla,data) => {
-    let col = await list(tabla);
-    let keys = Object.keys(data);
-    let key = keys[0]; 
-    let newcol = col.filter(item => item[key] === data[key])[0] || null;
-    db[tabla].push(newcol);
+    const newPassword = null;
+    for (let index = 0; index < db[tabla].length; index++) {
+        if(data.id === db[tabla][index].id){
+            password = db[tabla][index].password;
+            db[tabla].splice(index,1);
+            break;
+        }
+    }
+    data.password = newPassword;
+    upsert(tabla,data);
+    return data;
 }
 
 module.exports = {

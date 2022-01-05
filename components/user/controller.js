@@ -1,6 +1,7 @@
 const {nanoid} = require('nanoid')
 const auth = require('../auth')
 const TABLA = 'users';
+const TABLA2 = 'auth';
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
@@ -53,10 +54,16 @@ module.exports = function (injectedStore) {
     }
 
     const update = async(body) =>{
+        const userUpdated = {
+            id: body.id,
+            username: body.username,
+            name: body.name
+        }
         try {
-            const userUpdated = await store.updated(TABLA,body);
+            const userUpdate = await store.updated(TABLA2,userUpdated);
+            return userUpdate
         } catch (error) {
-            
+            return error.message
         }
     }
 
