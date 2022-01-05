@@ -6,6 +6,10 @@ const swaggerUI = require('swagger-ui-express');
 const user = require('../components/user/network')
 const auth = require('../components/auth/network')
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // REQUERIMIENTOS POR POST
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

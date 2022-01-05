@@ -39,10 +39,19 @@ const remove = async (tabla,id) => {
     return true;
 }
 
+const updated = async (tabla,data) => {
+    let col = await list(tabla);
+    let keys = Object.keys(data);
+    let key = keys[0]; 
+    let newcol = col.filter(item => item[key] === data[key])[0] || null;
+    db[tabla].push(newcol);
+}
+
 module.exports = {
     list,
     get,
     upsert,
     remove,
-    query
+    query,
+    updated
 }

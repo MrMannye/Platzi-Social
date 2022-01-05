@@ -28,9 +28,13 @@ module.exports = function (injectedStore) {
     const upsert = (body) =>{
         return new Promise(async(resolve,reject) => {
             const user = {
-                id: nanoid(),
-                username: body.username,
                 name: body.name,
+                username: body.username,
+            }
+            if (body.id) {
+                user.id = body.id;
+            } else {
+                user.id = nanoid();
             }
             if(body.password || body.username){
                 await auth.upsert({
@@ -48,9 +52,18 @@ module.exports = function (injectedStore) {
         })
     }
 
+    const update = async(body) =>{
+        try {
+            const userUpdated = await store.updated(TABLA,body);
+        } catch (error) {
+            
+        }
+    }
+
     return {
         list,
         get,
-        upsert
+        upsert,
+        update
     };
 }

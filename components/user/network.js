@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+const secure = require('./secure');
 const response = require('../../network/response')
 const controller = require('./index')
 
@@ -30,5 +32,13 @@ router.get('/:id', async (req,res) =>{
     }
 })
 
+router.put('/', secure('update') ,async (req,res) => {
+    try{
+        const action = controller.update(req.body);
+        response.success(req,res,action,200);
+    }catch(error){
+        response.error(req,res,error.message,500);
+    }
+})
 
 module.exports = router;

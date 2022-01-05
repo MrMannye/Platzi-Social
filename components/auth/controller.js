@@ -19,11 +19,17 @@ module.exports = function (injectedStore) {
 
     const login = async (username, password) => {
         const userLoged = await store.query(TABLA, { username: username })
-        if (userLoged.password == password) {
-            return auth.sign(userLoged);
-        } else {
-            throw new Error('Informacion invalida')
-        }
+        return bcrypt.compare(password, userLoged.password)
+        .then((response) => {
+            if (response === true) {
+                return auth.sign(userLoged);
+            } else {
+                throw new Error('Informacion invalida')
+            }
+        }).catch((error)=>{
+            return error.message;
+        })
+        
     }
 
     const upsert = async (data) => {
