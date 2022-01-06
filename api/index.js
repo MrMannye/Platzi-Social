@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const config = require('../config.js')
 const swaggerUI = require('swagger-ui-express');
 
 const user = require('../components/user/network')
@@ -11,7 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 
 // REQUERIMIENTOS POR POST
@@ -20,6 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 const swaggerDoc = require('./swagger.json')
 
 //ROUTER
+// app.use(cors({
+//     credentials: true,
+// }));
 app.use('/api/user', user);
 app.use('/api/auth', auth);
 app.use('/api/docs', swaggerUI.serve,swaggerUI.setup(swaggerDoc));
