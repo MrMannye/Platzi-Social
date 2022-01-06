@@ -35,7 +35,7 @@ handleConnection();
 const list = (tabla,id) => {
     return new Promise(async(resolve,reject) => {
         connection.query(`SELECT * FROM ${tabla}`, (err, result) => {
-            if(error) return reject(err);
+            if(err) return reject(err);
             resolve(result);
         })
     })
