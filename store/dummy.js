@@ -43,7 +43,7 @@ const updated = async (tabla,data) => {
     const newPassword = null;
     for (let index = 0; index < db[tabla].length; index++) {
         if(data.id === db[tabla][index].id){
-            password = db[tabla][index].password;
+            newPassword = db[tabla][index].password;
             db[tabla].splice(index,1);
             break;
         }

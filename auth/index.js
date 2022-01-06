@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const error = require('../utils/error')
 
 function sign(data){
     return jwt.sign(data, process.env.SECRET_TOKEN);
@@ -13,17 +14,17 @@ const check = {
         const decoded = decodeHeader(req);
         console.log(decoded);
         if(decoded.id !== owner){
-            throw new Error('No puedes editar')
+            throw error('No puedes editar',401)
         }
     }
 }
 
 function getToken(auth){
     if(!auth){
-        throw new Error('No viene el token');
+        throw error('No viene el token',401);
     }
     if(auth.indexOf('Bearer ')=== -1){
-        throw new Error('Formato Invalido');s
+        throw error('Formato Invalido',500);s
     }
     let token = auth.replace('Bearer ', '');
     return token;
