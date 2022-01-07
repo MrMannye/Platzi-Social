@@ -23,6 +23,24 @@ router.post('/', async (req,res) =>{
     }
 })
 
+router.get('/following',secure('logged'), async (req,res) => {
+    try {
+        const action = await controller.following(req.user.Id_Auth);
+        response.success(req,res,action,200);
+    } catch (error) {
+        response.error(req,res,error.message, 501);
+    }
+})
+
+router.post('/follow/:id', secure('logged'),(req,res) =>{
+    try {
+        const action = controller.follow(req.user.Id_Auth,req.params.id);
+        response.success(req,res,action,201);
+    } catch (error) {
+        response.error(req,res,error.message,500);
+    }
+})
+
 router.get('/:id', async (req,res) =>{
     try {
         const user = await controller.get(req.params.id);

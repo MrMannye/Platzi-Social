@@ -1,6 +1,6 @@
 const auth = require('../../auth')
 const bcrypt = require('bcrypt')
-const TABLA = 'auth';
+const TABLA = 'Auth';
 
 
 module.exports = function (injectedStore) {
@@ -18,11 +18,11 @@ module.exports = function (injectedStore) {
     }
 
     const login = async (username, password) => {
-        const userLoged = await store.query(TABLA, { username: username })
-        return bcrypt.compare(password, userLoged.password)
+        const userLoged = await store.query(TABLA, { Username: username })
+        return bcrypt.compare(password, userLoged.Pass)
         .then((response) => {
             if (response === true) {
-                return auth.sign(userLoged);
+                return auth.sign({...userLoged});
             } else {
                 throw new Error('Informacion invalida')
             }
@@ -34,16 +34,16 @@ module.exports = function (injectedStore) {
 
     const upsert = async (data) => {
         const user = {
-            id: data.id,
+            Id_Auth: data.Id_Auth,
         }
         if (data.username) {
-            user.username = data.username;
+            user.Username = data.username;
         }
         if (data.password) {
-            user.password = await bcrypt.hash(data.password,10);
+            user.Pass = await bcrypt.hash(data.password,10);
         }
         try {
-            const authUser = await store.upsert(TABLA, user);
+            const authUser = await store.insert(TABLA, user);
             return authUser;
         } catch (error) {
             return "Error de autenticacion"

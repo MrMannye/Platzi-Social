@@ -1,7 +1,7 @@
 const {nanoid} = require('nanoid')
 const auth = require('../auth')
-const TABLA = 'users';
-const TABLA2 = 'auth';
+const TABLA = 'Users';
+const T_FOLLOW = 'User_follow'
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
@@ -29,48 +29,58 @@ module.exports = function (injectedStore) {
     const upsert = (body) =>{
         return new Promise(async(resolve,reject) => {
             const user = {
-                name: body.name,
-                username: body.username,
+                Nombre: body.name,
+                Username: body.username,
             }
             if (body.id) {
-                user.id = body.id;
+                user.Id_User = body.id;
             } else {
-                user.id = nanoid();
+                user.Id_User = nanoid();
             }
             if(body.password || body.username){
                 await auth.upsert({
-                    id:user.id,
-                    username: user.username,
+                    Id_Auth:user.Id_User,
+                    username: user.Username,
                     password: body.password
                 })
             }
             try {
-                const newUser = await store.upsert(TABLA,user);
+                const newUser = await store.insert(TABLA,user);
                 resolve(newUser);
             } catch (error) {
-                reject("[controller] Error agregar usuario");
+                reject("[controller] " + error);
             }
         })
     }
 
     const update = async(body) =>{
         const userUpdated = {
-            id: body.id,
-            username: body.username,
-            name: body.name
+            Id_User: body.id,
+            Username: body.username,
+            Nombre: body.name
         }
         try {
-            const userUpdate = await store.updated(TABLA2,userUpdated);
+            const userUpdate = await store.update(TABLA,userUpdated);
             return userUpdate
         } catch (error) {
             return error.message
         }
     }
 
+    const follow = async (from, to) => {
+        return await store.insert(T_FOLLOW, {User_from: from, User_to: to});
+    }
+
+    const following = async (id) => {
+        return await store.following(T_FOLLOW, id);
+    }
+
     return {
         list,
         get,
         upsert,
-        update
+        update,
+        follow,
+        following
     };
 }

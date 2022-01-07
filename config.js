@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports ={
     api:{
         PORT: process.env.PORT || 3001,
+        SECRET_TOKEN: process.env.SECRET_TOKEN,
     },
     mysql: {
         DB_HOST: process.env.DB_HOST,
