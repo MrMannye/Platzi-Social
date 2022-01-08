@@ -9,6 +9,9 @@ const auth = require('../components/auth/network')
 const post = require('../components/post/network')
 const errors = require('../network/errors')
 
+const PORT = process.env.PORT || 3001;
+
+
 // REQUERIMIENTOS POR POST
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +29,6 @@ app.use('/api/docs', swaggerUI.serve,swaggerUI.setup(swaggerDoc));
 // ERRORS
 app.use(errors);
 
-app.listen(config.api.PORT, (req,res) => {
-    console.log("Escuchando en el puerto " + config.api.PORT)
+app.listen(PORT, (req,res) => {
+    console.log("Escuchando en el puerto " + PORT)
 })
