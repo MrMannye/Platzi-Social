@@ -8,10 +8,6 @@ const auth = require('../components/auth/network')
 const post = require('../components/post/network')
 const errors = require('../network/errors')
 
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
-
 // REQUERIMIENTOS POR POST
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
