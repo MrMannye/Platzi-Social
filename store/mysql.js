@@ -41,6 +41,28 @@ const list = (tabla) => {
     })
 }
 
+const posts = (tabla) => {
+    return new Promise(async(resolve,reject) => {
+        await connection.query(`SELECT * FROM ${tabla} 
+        INNER JOIN Users ON ${tabla}.Post_from = Users.Id_User`, (err, result) => {
+            if(err) return reject(err);
+            resolve(result);
+        })
+    })
+}
+
+const listPost = (tabla,id) => {
+    return new Promise(async(resolve,reject) => {
+        await connection.query(`SELECT * FROM ${tabla} 
+        INNER JOIN Users ON ${tabla}.Post_from = Users.Id_User
+        WHERE Id_User = ${id}`, (err, result) => {
+            if(err) return reject(err);
+            resolve(result);
+        })
+    })
+}
+
+
 const get = (tabla,id) => {
     return new Promise(async(resolve,reject) => {
         await connection.query(`SELECT * FROM ${tabla} WHERE Id_User = ${id}`, (err, result) => {
@@ -96,5 +118,7 @@ module.exports = {
     insert,
     update,
     query,
-    following
+    following,
+    listPost,
+    posts
 }

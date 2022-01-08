@@ -7,10 +7,15 @@ module.exports = function (injectedStore) {
     }
 
     function list() {
-        return store.list(TABLA);
+        return store.posts(TABLA);
+    }
+
+    function listPost(id) {
+        return store.listPost(TABLA,id);
     }
 
     return {
         list,
+        listPost,
     };
 }

@@ -7,10 +7,19 @@ const router = express.Router();
 
 // Routes
 router.get('/', list);
+router.get('/:id', posts);
 
 // functions
 function list(req, res, next) {
     Controller.list()
+        .then(data => {
+            response.success(req, res, data, 200);
+        })
+        .catch(next);
+}
+
+function posts(req, res, next) {
+    Controller.listPost(req.params.id)
         .then(data => {
             response.success(req, res, data, 200);
         })
