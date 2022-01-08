@@ -2,9 +2,10 @@
   "name": "nodejs-autenticacion",
   "version": "1.0.0",
   "description": "Backend con NodeJS para una red social ",
-  "main": "index.js",
+  "main": "/api/index.js",
   "scripts": {
     "env": "nodemon ./api/index.js",
+    "start": "node ./api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Miguel Aguilera Sanchez",
