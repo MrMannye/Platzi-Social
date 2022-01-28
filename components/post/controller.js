@@ -3,7 +3,7 @@ const TABLA = 'Post';
 module.exports = function (injectedStore) {
     let store = injectedStore;
     if (!store) {
-        store = require('../../../store/dummy');
+        store = require('../../store/mysql');
     }
 
     function list() {
